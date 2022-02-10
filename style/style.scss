@@ -12,6 +12,8 @@ body {
 	align-items: center;
 	justify-content: center;
 	min-height: 100vh;
+	min-width: 100vw;
+	flex-direction: column;
 }
 
 h1 {
@@ -27,4 +29,6 @@ progress {
 	width: 100%;
 	background-color: red;
 	opacity: 0.3;
+	position: fixed;
+	bottom: 0;
 }
