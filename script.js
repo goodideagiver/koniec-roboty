@@ -16,7 +16,7 @@ const setStyle = scale => {
 const timeHandler = localeTime => {
 	const [hour, minute, second] = localeTime.split(':');
 	if (hour < WORK_END_HR && hour >= WORK_START_HR) {
-		counterElement.innerText = `${WORK_END_HR - hour} godz ${
+		counterElement.innerText = `${WORK_END_HR - hour - 1} godz ${
 			59 - minute < 10 ? '0' + (59 - minute) : 59 - minute
 		} min ${59 - second < 10 ? '0' + (59 - second) : 59 - second} sek`;
 		setStyle(1 + second / 70);
