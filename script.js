@@ -1,37 +1,33 @@
-const counterElement = document.getElementById('end-counter');
-const appMain = document.getElementById('app');
-const header = appMain.querySelector('h1');
-const progress = document.getElementById('progress');
+var _a, _b;
+var counterElement = document.getElementById('end-counter');
+var appMain = document.getElementById('app');
+var header = appMain.querySelector('h1');
+var progress = document.getElementById('progress');
 appMain.style.transition = '.2s';
-
-let WORK_START_HR = parseInt(prompt('Godzina o której rozpoczynasz robotę', 8));
-let WORK_END_HR = parseInt(prompt('Godzina o której kończysz robotę', 16));
-
-progress.setAttribute('max', WORK_END_HR - WORK_START_HR);
-
-const setStyle = scale => {
-	appMain.style.transform = 'scale(' + scale + ')';
+var WORK_START_HR = parseInt((_a = prompt('Godzina o której rozpoczynasz robotę', '8')) !== null && _a !== void 0 ? _a : '8');
+var WORK_END_HR = parseInt((_b = prompt('Godzina o której kończysz robotę', '16')) !== null && _b !== void 0 ? _b : '16') - 1;
+progress.setAttribute('max', (WORK_END_HR - WORK_START_HR).toString());
+var setStyle = function (scale) {
+    appMain.style.transform = 'scale(' + scale + ')';
 };
-
-const timeHandler = localeTime => {
-	const [hour, minute, second] = localeTime.split(':');
-	if (hour < WORK_END_HR && hour >= WORK_START_HR) {
-		counterElement.innerText = `${WORK_END_HR - hour - 1} godz ${
-			59 - minute < 10 ? '0' + (59 - minute) : 59 - minute
-		} min ${59 - second < 10 ? '0' + (59 - second) : 59 - second} sek`;
-		setStyle(1 + second / 70);
-		progress.value = hour - WORK_START_HR;
-	} else if (hour > WORK_END_HR) {
-		header.innerText = 'Robota zakończona';
-		counterElement.innerText = '';
-	} else {
-		counterElement.innerText = `Robota za ${WORK_START_HR - hour} godz ${
-			59 - minute
-		} min ${59 - second} sek`;
-	}
+var timeHandler = function (localeTime) {
+    var _a = localeTime.split(':'), hour = _a[0], minute = _a[1], second = _a[2];
+    var currentHour = parseInt(hour);
+    var currentMinute = parseInt(minute);
+    var currentSecond = parseInt(second);
+    var currentTimeIsDuringWorkHours = currentHour >= WORK_START_HR && currentHour < WORK_END_HR;
+    if (currentTimeIsDuringWorkHours) {
+        var hoursLeft = WORK_END_HR - currentHour;
+        var minutesLeft = 60 - currentMinute;
+        var secondsLeft = 60 - currentSecond;
+        var percentageOfWorkDay = (currentHour - WORK_START_HR) / (WORK_END_HR - WORK_START_HR);
+        counterElement.innerText = "".concat(hoursLeft, "h ").concat(minutesLeft, "m ").concat(secondsLeft, "s");
+        progress.value = percentageOfWorkDay * 10;
+        return;
+    }
+    counterElement.innerText = 'Nie ma roboty';
 };
-
 timeHandler(new Date().toLocaleTimeString());
-setInterval(() => {
-	timeHandler(new Date().toLocaleTimeString());
+setInterval(function () {
+    timeHandler(new Date().toLocaleTimeString());
 }, 1000);
