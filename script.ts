@@ -7,10 +7,12 @@ const progress = document.getElementById('progress') as HTMLProgressElement
 appMain.style.transition = '.2s'
 
 const WORK_START_HR = parseInt(
-  prompt('Godzina o której rozpoczynasz robotę', '8') ?? '8'
+  prompt('Godzina o której rozpoczynasz robotę OD 0 do 23', '8') ?? '8'
 )
 const WORK_END_HR =
-  parseInt(prompt('Godzina o której kończysz robotę', '16') ?? '16') - 1
+  parseInt(
+    prompt('Godzina o której kończysz robotę  OD 0 do 23', '16') ?? '16'
+  ) - 1
 
 progress.setAttribute('max', (WORK_END_HR - WORK_START_HR).toString())
 
@@ -19,10 +21,9 @@ const setStyle = (scale) => {
 }
 
 const timeHandler = (localeTime) => {
-  const [hour, minute, second] = localeTime.split(':')
-  const currentHour = parseInt(hour)
-  const currentMinute = parseInt(minute)
-  const currentSecond = parseInt(second)
+  const currentHour = new Date().getHours()
+  const currentMinute = new Date().getMinutes()
+  const currentSecond = new Date().getSeconds()
 
   const currentTimeIsDuringWorkHours =
     currentHour >= WORK_START_HR && currentHour < WORK_END_HR
